@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .timeline-details {
+      margin-top: 30px;
+      text-align: left;
+    }
+    .timeline-details ol {
+      list-style: none;
+      padding: 0;
+    }
+    .timeline-details li {
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 6px;
+      background: #f0f4f8;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .timeline-details li:hover {
+      background: #dbeafe;
+      transform: scale(1.02);
+    }
+    canvas {
+      margin: 20px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"><img src="C:\Users\ajayv\Downloads\gait.jpg"alt="Logo"></div>
+    <div class="title"><h1>Timeline</h1></div>
+  </nav>
+
+  <main class="content">
+    <div class="text-box">
+      <h2>6-Month Project Timeline</h2>
+      <canvas id="timelineChart" width="600" height="300"></canvas>
+      <canvas id="lineChart" width="600" height="250"></canvas>
+
+      <div class="timeline-details">
+        <h3>Milestones</h3>
+        <ol>
+          <li data-index="0"><strong>Month 1:</strong> Ethics approval and subject recruitment</li>
+          <li data-index="1"><strong>Month 2:</strong> Equipment calibration and pilot testing</li>
+          <li data-index="2"><strong>Month 3:</strong> Experimental trials (Phase 1)</li>
+          <li data-index="3"><strong>Month 4:</strong> Experimental trials (Phase 2)</li>
+          <li data-index="4"><strong>Month 5:</strong> Data processing and statistical evaluation</li>
+          <li data-index="5"><strong>Month 6:</strong> Report writing and dissemination</li>
+        </ol>
+      </div>
+
+      <a href="index.html" class="back-btn">← Back to Dashboard</a>
+    </div>
+  </main>
+
+  <script>
+    // Bar Chart
+    const ctx1 = document.getElementById('timelineChart').getContext('2d');
+    const barChart = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Month 1','Month 2','Month 3','Month 4','Month 5','Month 6'],
+        datasets: [{
+          label: 'Timeline Progress',
+          data: [1, 2, 3, 4, 5, 6],
+          backgroundColor: ['#6a9bd8','#76c7c0','#f7b267','#f4845f','#c94c4c','#6a67ce'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        animation: { duration: 1200, easing: 'easeOutBounce' },
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { display: false }, grid: { display: false } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Line Chart (progress flow)
+    const ctx2 = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: ['Month 1','Month 2','Month 3','Month 4','Month 5','Month 6'],
+        datasets: [{
+          label: 'Project Completion (%)',
+          data: [15, 25, 45, 65, 85, 100],
+          borderColor: '#2563eb',
+          backgroundColor: '#93c5fd',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 6,
+          pointHoverRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true } },
+        scales: { y: { min: 0, max: 100, ticks: { stepSize: 20 } } }
+      }
+    });
+
+    // Interactivity: highlight bar on list hover
+    document.querySelectorAll('.timeline-details li').forEach((item) => {
+      item.addEventListener('mouseenter', () => {
+        const index = item.dataset.index;
+        barChart.setActiveElements([{ datasetIndex: 0, index: index }]);
+        barChart.update();
+      });
+      item.addEventListener('mouseleave', () => {
+        barChart.setActiveElements([]);
+        barChart.update();
+      });
+    });
+  </script>
+</body>
+</html>
+
